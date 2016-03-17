@@ -1,0 +1,86 @@
+package FSMTools
+
+import (
+	FSMUtilities
+	fmt
+	time
+	)
+
+func Initialize(){
+	fmt.Println(###########################################################################################)
+	fmt.Println(###########################################################################################)
+	fmt.Println(############################# Initializing state machine ##################################)
+	fmt.Println(###########################################################################################)
+	fmt.Println(###########################################################################################)
+
+	FSM.initQueueingTable()
+	FSM.initChannels()
+	FSM.initDriverUtilities()
+	FSM.initPosition()
+
+	fmt.Println("Current state: ",FSM.State)
+	fmt.Println("Current position: ", FSM.floor)
+	fmt.Println("FSM status: ",FSM.feedback)
+
+	return FSM
+}
+
+func setLights(){
+	//set lights for all buttons 
+}
+
+func initPosition(){
+	//check queue log, if last known floor was 0, go up
+	//else go down
+	//if queue log inaccessable or empty blink stop button while go down until reach 0 floor
+	//listen for deadswitch and send exeption if activated. 
+}
+
+func EventManager(){
+	/*
+	case 	FLOOR_REACHED set state to idle
+	case 	EMERGENCY_STOP set state to stop
+	case	OBSTRUCTION set state to obstruction
+	case	EXEC_ORDER get direction and set appropriate state
+	case	RECV_ORDER add order to queue
+	case	HOLD_DOORS set state to doors open
+	case	FAILURE set state to stop initiate failure protocol
+	case	ABORT keep state and erase last input, if warning raised achieve last stable state
+	*/
+}
+
+func RecvInput(){
+
+}
+
+func ExecuteOrder(){
+
+}
+
+func FloorArrival(){
+	/*
+	raise event FLOOR_REACHED
+	alert master
+	open doors
+	raise event HOLD_DOORS
+	set state DOORS_OPEN
+	wait for input
+	or wait for timeout
+	if timeout close doors
+	set state IDLE
+	else if input
+	set raise event RECV_ORDERS
+	alert master
+	raise event EXEC_ORDER
+	*/
+}
+
+func OpenDoors(){
+	//set lights on
+	//set state DOORS_OPEN
+	//start timer
+	//detect timer end
+	//set lights off
+	//set state IDLE
+}
+
