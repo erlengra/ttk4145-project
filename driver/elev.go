@@ -24,6 +24,7 @@ const (
 
 
 
+
 var lamp_channel_matrix = [N_FLOORS][N_BUTTONS] int {
 	{LIGHT_UP1, LIGHT_DOWN1, LIGHT_COMMAND1},
 	{LIGHT_UP2, LIGHT_DOWN2, LIGHT_COMMAND2},
