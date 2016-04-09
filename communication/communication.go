@@ -1,4 +1,5 @@
 package communication
+//encoding/decoding
 
 import (
     "../network"
