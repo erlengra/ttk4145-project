@@ -2,9 +2,9 @@ package communication
 //encoding/decoding
 
 import (
-    "../network"
-    "../driver"
+    //"../network"
     "encoding/json"
+    "fmt"
 )
 
 
@@ -30,9 +30,9 @@ func EncodeClientMessage(message clientMessage) []byte {
 	return dataStream
 }
 
-func DecodeClientMessage(packet network.Packet) clientMessage {	
-     var message ClientData
-     err := json.Unmarshal(b, &message)
+func DecodeClientMessage(dataStream []byte) clientMessage {	
+     var message clientMessage
+     err := json.Unmarshal(dataStream, &message)
      CheckError(err)
-     return result
+     return message
 }
