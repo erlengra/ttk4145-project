@@ -2,6 +2,7 @@ package main
 
 import (
 	"../driver"
+	"fmt"
 
 )
 
@@ -23,7 +24,7 @@ func main() {
 	}
 
 
-	driver.Elev_Set_Motor_Direction(DOWN_Direction)
+	driver.Elev_Set_Motor_Direction(-1)
 
 
 
