@@ -54,6 +54,12 @@ func Elev_Init() int{
 	Elev_Set_Door_Open_Lamp(0)
 	Elev_Set_Floor_Indicator(0)
 
+	//Only works when we assume that the elevator does not start up at the bottom
+	ElevDown()
+	for io_read_bit(SENSOR_FLOOR1) != 1 { }
+	ElevStop()
+
+
 	return 1;
 }
 
