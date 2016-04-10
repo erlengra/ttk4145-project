@@ -16,6 +16,7 @@ var broadcastListenPort int = 20012
 
 type Packet struct {
 	Receiver_address	string
+	Sender_address string
 	Data	[]byte
 	Length	int
 }
@@ -98,7 +99,8 @@ func udpConnectionReader(conn *net.UDPConn, msgSize int, receiveCh chan Packet) 
 			log.Fatal(err)
 			panic(err)
 		}
-		receiveCh <- Packet{Receiver_address: raddr.String(), Data: buf[:n], Length: n}
+		receiveCh <- Packet{Receiver_address: raddr.String(), Sender_address: GetOwnID(),
+	                            Data: buf[:n], Length: n}
 	}
 }
 
