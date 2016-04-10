@@ -28,7 +28,7 @@ func main() {
 		//Start master elevator routines
 
 		//temp := master.MasterEstablishContact(152, 125)
-		master.MasterEstablishContact(152,134)
+		master.MasterEstablishContact(144,134)
 		//fmt.Println(network.GetOwnID())
 
 
@@ -36,7 +36,7 @@ func main() {
 		fmt.Println("This is a slave elevator")
 		//start slave elevator routines
 	
-		master.ClientEstablishContact(22)
+		master.ClientEstablishContact(152)
 	}
 
 

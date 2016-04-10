@@ -80,9 +80,6 @@ func ClientEstablishContact(masterAddress int) {
 	masterIP := "129.241.187."+strconv.Itoa(masterAddress)
 
 
-	//////////////////////////////////////////
-	masterIP = "10.22.69.27"
-	/////////////////////////////////////////
 	
 
 	//Waiting for message from Master before continuing
