@@ -1,13 +1,13 @@
 package main
 
 import (
-    "./network"
+    //"./network"
     //"./driver"
     //"./communication"
     //"os"
     "flag"
     "fmt"
-    //"./master"
+    "./master"
 )
 
 //testing
@@ -27,8 +27,9 @@ func main() {
 		fmt.Println("This is the master elevator")
 		//Start master elevator routines
 
-		//temp := master.MasterEstablishContact(124, 125)
-		fmt.Println(network.GetOwnID())
+		//temp := master.MasterEstablishContact(152, 125)
+		master.MasterEstablishContact(152,134)
+		//fmt.Println(network.GetOwnID())
 
 
 	case false:
