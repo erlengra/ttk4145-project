@@ -35,6 +35,8 @@ func main() {
 	case false:
 		fmt.Println("This is a slave elevator")
 		//start slave elevator routines
+	
+		master.clientEstablishContact(22)
 	}
 
 
