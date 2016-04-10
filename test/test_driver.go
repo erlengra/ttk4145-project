@@ -2,7 +2,8 @@ package main
 
 import (
 	"../driver"
-
+	"fmt"
+	"time"
 )
 
 
@@ -23,9 +24,16 @@ func main() {
 	}
 
 
-	driver.Elev_Set_Motor_Direction(DOWN_Direction)
+	//driver.Elev_Set_Motor_Direction(dirnUp)
+	driver.ElevUp()
 
+	time.Sleep(2 * time.Second)
 
+	driver.ElevDown()
+
+	time.Sleep(1 * time.Second)
+
+	driver.ElevStop()
 
 
 

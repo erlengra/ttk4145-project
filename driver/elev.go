@@ -18,13 +18,13 @@ const (
 	BUTTON_COMMAND        // 2
 )
 
-type elev_motor_direction_t int
+type Elev_motor_direction_t int
 const (
-    UP_Direction_t =  1
+    UP_Direction =  1
     DOWN_Direction = -1
     STOP_Direction =  0
-)
 
+)
 
 
 
@@ -74,7 +74,7 @@ func Elev_Init() int{
 	return 1;
 }
 
-func Elev_Set_Motor_Direction(dirn elev_motor_direction_t) {
+func Elev_Set_Motor_Direction(dirn Elev_motor_direction_t) {
 
 	if dirn == 0 {
 		Io_Write_Analog(MOTOR, 0)
@@ -86,6 +86,19 @@ func Elev_Set_Motor_Direction(dirn elev_motor_direction_t) {
 		Io_Write_Analog(MOTOR, MOTOR_SPEED)
 	}
 }
+
+func ElevUp() {
+	Elev_Set_Motor_Direction(UP_Direction)
+}
+
+func ElevStop() {
+	Elev_Set_Motor_Direction(STOP_Direction)
+}
+
+func ElevDown() {
+	Elev_Set_Motor_Direction(DOWN_Direction)
+}
+
 
 func Elev_Set_Button_Lamp(button elev_button_type_t, floor int, value int) {
 
