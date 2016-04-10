@@ -24,7 +24,7 @@ func main() {
 	for {
 		time.Sleep(1 * time.Second)
 
-		msg := network.Packet{Receiver_address: string(localIP)+":20001", Sender_address = localIP,
+		msg := network.Packet{Receiver_address: string(localIP)+":20001", Sender_address: string(localIP),
 				      Data: []byte("Testmsg"), Length:7}
 		fmt.Println("Sending------")
 		send_channel <- msg
