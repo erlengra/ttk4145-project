@@ -5,26 +5,8 @@ import (
 	"../config"
 )
 
-//const N_FLOORS = 4
-//const N_BUTTONS = 3
-
-//const MOTOR_SPEED = 2800
 
 
-type elev_button_type_t int
-const (
-	BUTTON_CALL_UP = iota // 0
-	BUTTON_CALL_DOWN      // 1
-	BUTTON_COMMAND        // 2
-)
-
-type Elev_motor_direction_t int
-const (
-    UP_Direction =  1
-    DOWN_Direction = -1
-    STOP_Direction =  0
-
-)
 
 
 
@@ -61,7 +43,7 @@ func Elev_Init() int{
 	}
 
 	for f := 0; f < NUM_FLOORS; f++ {
-		var b elev_button_type_t
+		var b ButtonType
 		for b = 0; b < NUM_BUTTONS; b++ {
 			Elev_Set_Button_Lamp(b,f,0)
 		}
@@ -74,7 +56,7 @@ func Elev_Init() int{
 	return 1;
 }
 
-func Elev_Set_Motor_Direction(dirn Elev_motor_direction_t) {
+func Elev_Set_Motor_Direction(dirn MotorDirection) {
 
 	if dirn == 0 {
 		Io_Write_Analog(MOTOR, 0)
@@ -100,7 +82,7 @@ func ElevDown() {
 }
 
 
-func Elev_Set_Button_Lamp(button elev_button_type_t, floor int, value int) {
+func Elev_Set_Button_Lamp(button ButtonType, floor int, value int) {
 
 	//The following should be checked
 	//	assert(floor >= 0);
@@ -158,7 +140,7 @@ func Elev_Set_Stop_Lamp(value int) {
 }
 
 
-func Elev_Get_Button_Signal(button elev_button_type_t, floor int) int {
+func Elev_Get_Button_Signal(button ButtonType, floor int) int {
 	//The following should be checked
 	//    assert(floor >= 0);
     //	  assert(floor < NUM_FLOORS);

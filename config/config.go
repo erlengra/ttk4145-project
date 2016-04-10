@@ -15,3 +15,9 @@ const (
 	BUTTON_CALL_COMMAND
 )
 
+type MotorDirection int
+const (
+	UP_Direction = 1
+	DOWN_Direction = -1
+	STOP_Direction = 0
+)
