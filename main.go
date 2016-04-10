@@ -36,7 +36,7 @@ func main() {
 		fmt.Println("This is a slave elevator")
 		//start slave elevator routines
 	
-		master.clientEstablishContact(22)
+		master.ClientEstablishContact(22)
 	}
 
 

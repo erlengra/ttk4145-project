@@ -64,7 +64,7 @@ func MasterEstablishContact(slaveAddress1, slaveAddress2 int) int {
 
 //TO-DO: Add functionality to time out if master is not found?
 
-func clientEstablishContact(masterAddress int) {
+func ClientEstablishContact(masterAddress int) {
 
 	send_channel := make(chan network.Packet)
 	receive_channel := make(chan network.Packet)
