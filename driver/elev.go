@@ -56,7 +56,7 @@ func Elev_Init() int{
 
 	//Only works when we assume that the elevator does not start up at the bottom
 	ElevDown()
-	for io_read_bit(SENSOR_FLOOR1) != 1 { }
+	for Io_Read_Bit(SENSOR_FLOOR1) != true { }
 	ElevStop()
 
 
