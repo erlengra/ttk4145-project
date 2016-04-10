@@ -179,7 +179,7 @@ func Elev_Get_Obstruction_Signal() bool {
 }
 
 
-func Order_Button_Poller(polling_chan chan config.OrderButton) {
+func Order_Button_Poller(polling_chan_button chan config.OrderButton) {
 	var buttonType config.ButtonType
 	var lastFloorPassed[config.NUM_BUTTONS][config.NUM_FLOORS]int
 
@@ -189,25 +189,32 @@ func Order_Button_Poller(polling_chan chan config.OrderButton) {
 			for floor := 0; floor < config.NUM_FLOORS; floor++ {
 				buttonValue := Elev_Get_Button_Signal(buttonType, floor)
 				if buttonValue != 0 && buttonValue != lastFloorPassed[buttonType][floor] {
-
 					fmt.Println("PUSHED!")
-
-					polling_chan <- config.OrderButton{Type: buttonType, Floor: floor}
+					polling_chan_button <- config.OrderButton{Type: buttonType, Floor: floor}
 				}
 				lastFloorPassed[buttonType][floor] = buttonValue
 			}
 		}
-
 	}
-
-
-
-
 }
 
 
 
+func Floor_Poller(polling_chan_floor chan int) {
 
+	var currentFloor, previousFloor int
+	previousFloor = -1
+
+	for {
+		time.Sleep(100 * time.Millisecond)
+		currentFloor = Elev_Get_Floor_Sensor_Signal()
+		if currentFloor != previousFloor && currentFloor != -1 {
+			previousFloor = currentFloor
+			polling_chan_floor <- currentFloor
+		}
+
+	}
+}
 
 
 
