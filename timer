@@ -1,0 +1,20 @@
+package timer
+
+import (
+	"time"
+)
+
+func timer(timeout chan <- bool, reset_timer <- chan bool){
+	timer := time.NewTimer(0)
+	timer.stop()
+
+	for{
+		if <- reset{
+			timer.Reset(timer)
+		}
+		else if <-timer.C{
+			timer.stop()
+			timeout <- true
+		}
+	}
+}
