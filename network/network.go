@@ -9,6 +9,11 @@ import (
 
 var local_address, broadcast_address *net.UDPAddr
 
+
+var localListenPort int = 10012
+var broadcastListenPort int = 20012
+
+
 type Packet struct {
 	Receiver_address	string
 	Data	[]byte

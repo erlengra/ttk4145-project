@@ -25,6 +25,7 @@ const (
 
 
 
+
 var lamp_channel_matrix = [N_FLOORS][N_BUTTONS] int {
 	{LIGHT_UP1, LIGHT_DOWN1, LIGHT_COMMAND1},
 	{LIGHT_UP2, LIGHT_DOWN2, LIGHT_COMMAND2},
@@ -48,7 +49,7 @@ var button_channel_matrix = [N_FLOORS][N_BUTTONS] int {
 //Returns 0 on failure, 1 on success
 func Elev_Init() int{
 
-	//Beware of the logic here, the if and else may have to be switched!
+	//Beware of the logic here, the if and else may have to be switched for proper response!
 	if !Io_Init(){
 		fmt.Println("The elevator was initialized correctly!")
 	} else {
