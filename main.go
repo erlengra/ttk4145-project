@@ -1,12 +1,13 @@
 package main
 
 import (
-    //"./network"
+    "./network"
     //"./driver"
     //"./communication"
     //"os"
     "flag"
     "fmt"
+    //"./master"
 )
 
 //testing
@@ -22,12 +23,17 @@ func main() {
 
 	switch *isMasterElevator {
 	case true:
-	    fmt.Println("This is the master elevator")
-	    //Start master elevator routines
-	
+		
+		fmt.Println("This is the master elevator")
+		//Start master elevator routines
+
+		//temp := master.MasterEstablishContact(124, 125)
+		fmt.Println(network.GetOwnID())
+
+
 	case false:
-	    fmt.Println("This is a slave elevator")
-	    //start slave elevator routines
+		fmt.Println("This is a slave elevator")
+		//start slave elevator routines
 	}
 
 

@@ -10,8 +10,8 @@ import (
 var local_address, broadcast_address *net.UDPAddr
 
 
-var localListenPort int = 10012
-var broadcastListenPort int = 20012
+var LocalListenPort int = 10012
+var BroadcastListenPort int = 20012
 
 
 type Packet struct {
@@ -99,7 +99,7 @@ func udpConnectionReader(conn *net.UDPConn, msgSize int, receiveCh chan Packet) 
 			log.Fatal(err)
 			panic(err)
 		}
-		receiveCh <- Packet{Receiver_address: raddr.String(), Sender_address: GetOwnID(),
+		receiveCh <- Packet{Receiver_address: raddr.String(), Sender_address: string(GetOwnID()),
 	                            Data: buf[:n], Length: n}
 	}
 }
