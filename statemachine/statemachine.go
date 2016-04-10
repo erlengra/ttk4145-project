@@ -1,17 +1,17 @@
 package stateMachine
 
 import (
-		def "config"
-		"queue"
-	)
+	"config"
+	"queue"
+)
 
 type internal_channels struct{
 	new_order		chan bool
-	package_out 	chan def.infoPackage
+	package_out 		chan config.infoPackage
 	at_floor 		chan int
 	close_door		chan bool
 	floor_lamp		chan int
-	door_open_lamp	chan bool
+	door_open_lamp		chan bool
 	direction		chan int
 	reset_timer		chan bool
 }
