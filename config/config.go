@@ -21,3 +21,9 @@ const (
 	DOWN_Direction = -1
 	STOP_Direction = 0
 )
+
+
+type OrderButton struct {
+    Floor int
+    Type  ButtonType
+}

@@ -176,3 +176,61 @@ func Elev_Get_Stop_Signal() bool {
 func Elev_Get_Obstruction_Signal() bool {
 	return Io_Read_Bit(OBSTRUCTION)
 }
+
+
+func Order_Button_Poller(polling_chan chan config.OrderButton) {
+
+	var buttonType config.ButtonType
+	var lastFloorPassed[config.NUM_BUTTONS][config.NUM_FLOORS]int
+
+	for buttonType = config.BUTTON_CALL_UP; buttonType <= config.BUTTON_COMMAND; button++ {
+		for floor := 0; floor < config.NUM_FLOORS; floor++ {
+			buttonValue := Elev_Get_Button_Signal(buttonType, floor)
+			if buttonValue != 0 && value != last_floor[buttonType][floor] {
+				polling_chan <- config.OrderButton{ButtonType: buttonType, Floor: floor}
+			}
+			lastFloorPassed[button][floor] = buttonValue
+		}
+	}
+}
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
