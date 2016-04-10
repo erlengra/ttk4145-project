@@ -117,9 +117,9 @@ func ClientEstablishContact(masterAddress int) {
 	}
 
 	//masterDiscovered := false
-	masterIP := "129.241.187."+strconv.Itoa(masterAddress)
+	//masterIP := "129.241.187."+strconv.Itoa(masterAddress)
 
-
+	var masterIP string
 	
 
 	//Waiting for message from Master before continuing
@@ -127,14 +127,17 @@ func ClientEstablishContact(masterAddress int) {
 		//time.Sleep(1 * time.Second)
 		fmt.Println("Looking for Master...")
 		rcvMsg := <- receive_channel
-		if rcvMsg.Sender_address == masterIP {break}
+		//if rcvMsg.Sender_address == masterIP {break}
+		masterIP = rcvMsg.Sender_address
+		break
+
 	}
 	//At this point we know that the Master elevator is up
 
 	fmt.Println("Master discovered!")
 
 
-	clientMsg := network.Packet{Receiver_address: masterIP+strconv.Itoa(network.LocalListenPort),
+	clientMsg := network.Packet{Receiver_address: masterIP+":"+strconv.Itoa(network.LocalListenPort),
 				    Sender_address: string(network.GetOwnID()), Data: []byte("Testmsg"), Length:7}
 
 
