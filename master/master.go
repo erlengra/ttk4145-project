@@ -88,6 +88,7 @@ func ClientEstablishContact(masterAddress int) {
 	//Waiting for message from Master before continuing
 	for {
 		//time.Sleep(1 * time.Second)
+		fmt.Println("Looking for Master...")
 		rcvMsg := <- receive_channel
 		if rcvMsg.Sender_address == masterIP {break}
 	}
