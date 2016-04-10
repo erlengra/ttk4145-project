@@ -1,11 +1,14 @@
 package driver
 
-import "fmt"
+import (
+	"fmt"
+	"../config"
+)
 
-const N_FLOORS = 4
-const N_BUTTONS = 3
+//const N_FLOORS = 4
+//const N_BUTTONS = 3
 
-const MOTOR_SPEED = 2800
+//const MOTOR_SPEED = 2800
 
 
 type elev_button_type_t int
@@ -26,14 +29,14 @@ const (
 
 
 
-var lamp_channel_matrix = [N_FLOORS][N_BUTTONS] int {
+var lamp_channel_matrix = [NUM_FLOORS][NUM_BUTTONS] int {
 	{LIGHT_UP1, LIGHT_DOWN1, LIGHT_COMMAND1},
 	{LIGHT_UP2, LIGHT_DOWN2, LIGHT_COMMAND2},
 	{LIGHT_UP3, LIGHT_DOWN3, LIGHT_COMMAND3},
 	{LIGHT_UP4, LIGHT_DOWN4, LIGHT_COMMAND4},
 }
 
-var button_channel_matrix = [N_FLOORS][N_BUTTONS] int {
+var button_channel_matrix = [NUM_FLOORS][NUM_BUTTONS] int {
     {BUTTON_UP1, BUTTON_DOWN1, BUTTON_COMMAND1},
     {BUTTON_UP2, BUTTON_DOWN2, BUTTON_COMMAND2},
     {BUTTON_UP3, BUTTON_DOWN3, BUTTON_COMMAND3},
@@ -57,9 +60,9 @@ func Elev_Init() int{
 		return 0;
 	}
 
-	for f := 0; f < N_FLOORS; f++ {
+	for f := 0; f < NUM_FLOORS; f++ {
 		var b elev_button_type_t
-		for b = 0; b < N_BUTTONS; b++ {
+		for b = 0; b < NUM_BUTTONS; b++ {
 			Elev_Set_Button_Lamp(b,f,0)
 		}
 	}
@@ -88,9 +91,9 @@ func Elev_Set_Button_Lamp(button elev_button_type_t, floor int, value int) {
 
 	//The following should be checked
 	//	assert(floor >= 0);
-    //	assert(floor < N_FLOORS);
+    //	assert(floor < NUM_FLOORS);
     //	assert(button >= 0);
-    //	assert(button < N_BUTTONS);
+    //	assert(button < NUM_BUTTONS);
 	
 	if value == 1 {
 		Io_Set_Bit(lamp_channel_matrix[floor][int(button)])
@@ -105,7 +108,7 @@ func Elev_Set_Floor_Indicator(floor int) {
 
 	//The following should be checked
 	//	assert(floor >= 0);
-    //	assert(floor < N_FLOORS);
+    //	assert(floor < NUM_FLOORS);
 
 
 	switch floor {
@@ -145,9 +148,9 @@ func Elev_Set_Stop_Lamp(value int) {
 func Elev_Get_Button_Signal(button elev_button_type_t, floor int) int {
 	//The following should be checked
 	//    assert(floor >= 0);
-    //	  assert(floor < N_FLOORS);
+    //	  assert(floor < NUM_FLOORS);
     //    assert(button >= 0);
-    //    assert(button < N_BUTTONS);
+    //    assert(button < NUM_BUTTONS);
 
 	if Io_Read_Bit(button_channel_matrix[floor][int(button)]) {
 		return 1
