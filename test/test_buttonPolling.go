@@ -29,14 +29,21 @@ func main() {
 
 	channel_button_pressed := make(chan config.OrderButton)
 
-	var tmpButton config.OrderButton
+	go driver.Order_Button_Poller(channel_button_pressed)
+
 
 	for {
-		tmpButton <- channel_button_pressed
-		
-		fmt.Println("Button of type "+strconv.Itoa(tmpButton.Type)+" pressed at floor "
-			   +strconv.Itoa(tmpButton.Floor)+"\n")
 
+		time.Sleep(1 * time.Second)
+		select{
+		case tmpButton := <- channel_button_pressed:
+		
+			fmt.Println("Button of type "+strconv.Itoa(int(tmpButton.Type))+" pressed at floor "+strconv.Itoa(tmpButton.Floor)+"\n")
+		//default:
+		//	fmt.Println("Nothing....")
+
+
+		}
 
 	}	
 

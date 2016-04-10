@@ -3,6 +3,7 @@ package driver
 import (
 	"fmt"
 	"../config"
+	"time"
 )
 
 
@@ -11,14 +12,14 @@ import (
 
 
 
-var lamp_channel_matrix = [NUM_FLOORS][NUM_BUTTONS] int {
+var lamp_channel_matrix = [config.NUM_FLOORS][config.NUM_BUTTONS] int {
 	{LIGHT_UP1, LIGHT_DOWN1, LIGHT_COMMAND1},
 	{LIGHT_UP2, LIGHT_DOWN2, LIGHT_COMMAND2},
 	{LIGHT_UP3, LIGHT_DOWN3, LIGHT_COMMAND3},
 	{LIGHT_UP4, LIGHT_DOWN4, LIGHT_COMMAND4},
 }
 
-var button_channel_matrix = [NUM_FLOORS][NUM_BUTTONS] int {
+var button_channel_matrix = [config.NUM_FLOORS][config.NUM_BUTTONS] int {
     {BUTTON_UP1, BUTTON_DOWN1, BUTTON_COMMAND1},
     {BUTTON_UP2, BUTTON_DOWN2, BUTTON_COMMAND2},
     {BUTTON_UP3, BUTTON_DOWN3, BUTTON_COMMAND3},
@@ -42,9 +43,9 @@ func Elev_Init() int{
 		return 0;
 	}
 
-	for f := 0; f < NUM_FLOORS; f++ {
-		var b ButtonType
-		for b = 0; b < NUM_BUTTONS; b++ {
+	for f := 0; f < config.NUM_FLOORS; f++ {
+		var b config.ButtonType
+		for b = 0; b < config.NUM_BUTTONS; b++ {
 			Elev_Set_Button_Lamp(b,f,0)
 		}
 	}
@@ -56,33 +57,33 @@ func Elev_Init() int{
 	return 1;
 }
 
-func Elev_Set_Motor_Direction(dirn MotorDirection) {
+func Elev_Set_Motor_Direction(dirn config.MotorDirection) {
 
 	if dirn == 0 {
 		Io_Write_Analog(MOTOR, 0)
 	} else if dirn > 0{
 		Io_Clear_Bit(MOTORDIR)
-		Io_Write_Analog(MOTOR, MOTOR_SPEED)
+		Io_Write_Analog(MOTOR, config.MOTOR_SPEED)
 	} else if dirn < 0 {
 		Io_Set_Bit(MOTORDIR)
-		Io_Write_Analog(MOTOR, MOTOR_SPEED)
+		Io_Write_Analog(MOTOR, config.MOTOR_SPEED)
 	}
 }
 
 func ElevUp() {
-	Elev_Set_Motor_Direction(UP_Direction)
+	Elev_Set_Motor_Direction(config.UP_Direction)
 }
 
 func ElevStop() {
-	Elev_Set_Motor_Direction(STOP_Direction)
+	Elev_Set_Motor_Direction(config.STOP_Direction)
 }
 
 func ElevDown() {
-	Elev_Set_Motor_Direction(DOWN_Direction)
+	Elev_Set_Motor_Direction(config.DOWN_Direction)
 }
 
 
-func Elev_Set_Button_Lamp(button ButtonType, floor int, value int) {
+func Elev_Set_Button_Lamp(button config.ButtonType, floor int, value int) {
 
 	//The following should be checked
 	//	assert(floor >= 0);
@@ -140,7 +141,7 @@ func Elev_Set_Stop_Lamp(value int) {
 }
 
 
-func Elev_Get_Button_Signal(button ButtonType, floor int) int {
+func Elev_Get_Button_Signal(button config.ButtonType, floor int) int {
 	//The following should be checked
 	//    assert(floor >= 0);
     //	  assert(floor < NUM_FLOORS);
@@ -179,19 +180,29 @@ func Elev_Get_Obstruction_Signal() bool {
 
 
 func Order_Button_Poller(polling_chan chan config.OrderButton) {
-
 	var buttonType config.ButtonType
 	var lastFloorPassed[config.NUM_BUTTONS][config.NUM_FLOORS]int
 
-	for buttonType = config.BUTTON_CALL_UP; buttonType <= config.BUTTON_COMMAND; button++ {
-		for floor := 0; floor < config.NUM_FLOORS; floor++ {
-			buttonValue := Elev_Get_Button_Signal(buttonType, floor)
-			if buttonValue != 0 && value != last_floor[buttonType][floor] {
-				polling_chan <- config.OrderButton{ButtonType: buttonType, Floor: floor}
+	for {
+		time.Sleep(100 * time.Millisecond)
+		for buttonType = config.BUTTON_CALL_UP; buttonType <= config.BUTTON_CALL_COMMAND; buttonType++ {
+			for floor := 0; floor < config.NUM_FLOORS; floor++ {
+				buttonValue := Elev_Get_Button_Signal(buttonType, floor)
+				if buttonValue != 0 && buttonValue != lastFloorPassed[buttonType][floor] {
+
+					fmt.Println("PUSHED!")
+
+					polling_chan <- config.OrderButton{Type: buttonType, Floor: floor}
+				}
+				lastFloorPassed[buttonType][floor] = buttonValue
 			}
-			lastFloorPassed[button][floor] = buttonValue
 		}
+
 	}
+
+
+
+
 }
 
 
@@ -200,7 +211,7 @@ func Order_Button_Poller(polling_chan chan config.OrderButton) {
 
 
 
-}
+
 
 
 
