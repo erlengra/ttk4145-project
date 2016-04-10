@@ -93,6 +93,8 @@ func ClientEstablishContact(masterAddress int) {
 	}
 	//At this point we know that the Master elevator is up
 
+	fmt.Println("Master discovered!")
+
 
 	clientMsg := network.Packet{Receiver_address: masterIP+strconv.Itoa(network.LocalListenPort),
 				    Sender_address: string(network.GetOwnID()), Data: []byte("Testmsg"), Length:7}
