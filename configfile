@@ -1,0 +1,40 @@
+package config
+
+import {
+	
+}
+
+const floors = 4
+const numOfElevators = 3
+const local_IPAddr 	string
+const runTime = 10000
+
+type infoPackage struct {
+	IPAddr    		string
+	cost      		int
+	button    		int
+	floor     		int
+	dir       		int
+}
+
+type keyCategory struct {
+	elevator_call	int
+	floor_select	int
+} 
+
+const(
+	OK = 			int iota
+	new_order
+	cost
+	order_done
+)
+
+const(
+	button_up 		int iota + 1
+	button_down
+)
+
+const(
+	direction_up	int iota + 2
+	direction_down
+)
