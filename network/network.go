@@ -33,7 +33,7 @@ func Network_Init(localListenPort, broadcastListenPort, msgSize int, sendCh, rec
 	local_address, err := net.ResolveUDPAddr("udp4", tempAddr.String())
 	local_address.Port = localListenPort
 
-	fmt.Println(local_address)
+	//fmt.Println(local_address)
 
 	localListenConn, err := net.ListenUDP("udp4", local_address)
 	if err != nil {

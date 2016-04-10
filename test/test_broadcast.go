@@ -24,13 +24,10 @@ func main() {
 	for {
 		time.Sleep(1 * time.Second)
 
-		msg := network.Packet{Receiver_address: string(localIP)+":10012", Sender_address: string(localIP),
+		msg := network.Packet{Receiver_address: "broadcast", Sender_address: string(localIP),
 				      Data: []byte("Testmsg"), Length:7}
-		fmt.Println("Sending------")
+		fmt.Println("Broadcasting------")
 		send_channel <- msg
 		network.PrintPacket(msg)
-		fmt.Println("Receiving----")
-		rcvMsg := <- receive_channel
-		network.PrintPacket(rcvMsg)
 	}
 }
