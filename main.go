@@ -59,6 +59,8 @@ func MasterEstablishContact(slaveAddress1, slaveAddress2 int, send_channel, rece
 	//send_channel := make(chan network.Packet)
 	//receive_channel := make(chan network.Packet)
 
+
+
 	err := network.Network_Init(network.LocalListenPort, network.BroadcastListenPort,
         1024, send_channel, receive_channel)
 	if err != nil {
@@ -67,31 +69,49 @@ func MasterEstablishContact(slaveAddress1, slaveAddress2 int, send_channel, rece
 	}
 
 
-	slave1IP := "129.241.187."+strconv.Itoa(slaveAddress1)
-	slave2IP := "129.241.187."+strconv.Itoa(slaveAddress2)
+	//slave1IP := "129.241.187."+strconv.Itoa(slaveAddress1)
+	//slave2IP := "129.241.187."+strconv.Itoa(slaveAddress2)
 
 	//numberOfSlavesFound = 0
-	slave1Found := false
-	slave2Found := false
+	//slave1Found := false
+	//slave2Found := false
 	masterMsg := network.Packet{Receiver_address: "broadcast", Sender_address: string(network.GetOwnID()),
 				    Data: []byte("Testmsg"), Length:7}
 
+
+	numberOfSlavesFound := 0
+	//var slaves[2]string
+	firstSlaveFound := ""
 
 	for {
 		time.Sleep(1 * time.Second)
 		fmt.Println("Looking for slaves\n")
 
-		if slave1Found && slave2Found {break}
+		//if slave1Found && slave2Found {break}
+		if numberOfSlavesFound == 2 {break}
 		send_channel <- masterMsg
 
 		rcvMsg := <- receive_channel
-		if rcvMsg.Sender_address == slave1IP {
-			slave1Found = true
-			fmt.Println("Slave elevator number 1, at spot "+strconv.Itoa(slaveAddress1)+"found!")
-		} else if rcvMsg.Sender_address == slave2IP {
-			slave2Found = true
-			fmt.Println("Slave elevator number 2, at spot "+strconv.Itoa(slaveAddress2)+"found!")
+		fmt.Println("Received message from "+rcvMsg.Sender_address)
+		// if rcvMsg.Sender_address == slave1IP {
+		// 	slave1Found = true
+		// 	fmt.Println("Slave elevator number 1, at spot "+strconv.Itoa(slaveAddress1)+"found!")
+		// } else if rcvMsg.Sender_address == slave2IP {
+		// 	slave2Found = true
+		// 	fmt.Println("Slave elevator number 2, at spot "+strconv.Itoa(slaveAddress2)+"found!")
+		// } else {
+		// 	fmt.Println("Did I make it to here?")
+		// }
+
+
+		if rcvMsg.Sender_address != firstSlaveFound && rcvMsg.Sender_address != string(network.GetOwnID())  {
+			firstSlaveFound = rcvMsg.Sender_address
+			numberOfSlavesFound++
+			//fmt.Println(rcvMsg.Sender_address)
 		}
+
+
+
 
 	}
 
