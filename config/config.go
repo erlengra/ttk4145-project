@@ -28,3 +28,11 @@ type OrderButton struct {
     Floor int
     Type  ButtonType
 }
+
+
+func CheckError(err error) {
+    if err  != nil {
+        fmt.Println("Error: " , err)
+        os.Exit(0)
+    }
+}
