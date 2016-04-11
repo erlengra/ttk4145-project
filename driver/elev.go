@@ -56,9 +56,13 @@ func Elev_Init() int{
 
 	//Only works when we assume that the elevator does not start up at the bottom
 	ElevDown()
-	for Io_Read_Bit(SENSOR_FLOOR1) != true { }
+	for Io_Read_Bit(SENSOR_FLOOR1) != true { 
+		fmt.Println("On my way to floor 1...")
+		time.Sleep(1 * time.Second)
+	}
 	ElevStop()
-
+	fmt.Println("Elevator initation complete. Ready to start from floor 1!")
+	time.Sleep(1 * time.Second)
 
 	return 1;
 }
@@ -195,7 +199,6 @@ func Order_Button_Poller(polling_chan_button chan config.OrderButton) {
 			for floor := 0; floor < config.NUM_FLOORS; floor++ {
 				buttonValue := Elev_Get_Button_Signal(buttonType, floor)
 				if buttonValue != 0 && buttonValue != lastFloorPassed[buttonType][floor] {
-					fmt.Println("PUSHED!")
 					polling_chan_button <- config.OrderButton{Type: buttonType, Floor: floor}
 				}
 				lastFloorPassed[buttonType][floor] = buttonValue
