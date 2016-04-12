@@ -5,33 +5,22 @@ import (
     //"../network"
     "encoding/json"
     "fmt"
+    "../config"
 )
 
 
-type clientMessage struct {
-	direction bool
-	lastPassedFloor int
-	targetFloor int
-}
 
 
 
 
-func CheckError(err error) {
-    if err  != nil {
-        fmt.Println("Error: " , err)
-    }
-}
-
-
-func EncodeClientMessage(message clientMessage) []byte {	
+func EncodeClientMessage(message config.InfoPackage) []byte {	
 	dataStream, err := json.Marshal(message)
 	CheckError(err)
 	return dataStream
 }
 
-func DecodeClientMessage(dataStream []byte) clientMessage {	
-     var message clientMessage
+func DecodeClientMessage(dataStream []byte) config.InfoPackage {	
+     var message config.InfoPackage
      err := json.Unmarshal(dataStream, &message)
      CheckError(err)
      return message

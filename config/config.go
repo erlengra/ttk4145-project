@@ -41,3 +41,12 @@ func CheckError(err error) {
         os.Exit(0)
     }
 }
+
+
+
+
+type InfoPackage struct {
+	direction bool
+	lastPassedFloor int
+	targetFloor int
+}

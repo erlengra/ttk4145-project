@@ -20,6 +20,8 @@ var order_button_pressed_channel = make(chan config.OrderButton)
 var floor_reached_channel = make(chan int)
 
 var masterIP = "129.241.187.150"
+var slave1IP = "129.241.187.145"
+var slave2IP = "129.241.187.142"
 
 
 
@@ -99,9 +101,24 @@ func PollingHandler() {
 
 
 func NetworkHandler() {
+
+
 	for {
-		message := <- network_receive_channel
-		fmt.Println("A button was pressed at "+message.Sender_address+"\n")
+		select {
+		case message := <- network_receive_channel:
+			fmt.Println("A button was pressed at "+message.Sender_address+"\n")
+
+
+		//case <-time.After(3 * time.Second)
+
+
+
+		}
+
+
+
+
+		
 	}
 } 
 
