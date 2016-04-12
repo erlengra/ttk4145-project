@@ -1,16 +1,13 @@
-package statemachine
+package stateMachine
 
 import (
-		"../config"
-		"../queue"
-		//"../communication"
-		"fmt"
-		"time"
+		def "config"
+		"queue"
 	)
 
 type internal_channels struct{
 	new_order		chan bool
-	package_out 	chan config.infoPackage
+	package_out 	chan def.infoPackage
 	at_floor 		chan int
 	close_door		chan bool
 	floor_lamp		chan int
@@ -19,28 +16,10 @@ type internal_channels struct{
 	reset_timer		chan bool
 }
 
-
-
-func timer(timeout chan <- bool, reset_timer <- chan bool){
-	timer := time.NewTimer(0)
-	timer.stop()
-
-	for{
-		if <- reset{
-			timer.Reset(timer)
-		}
-		else if <-timer.C{
-			timer.stop()
-			timeout <- true
-		}
-	}
-}
-
-
-
 const (
 	idle int = iota
-	moving
+	moving_up
+	moving_down
 	stop
 )
 
@@ -52,13 +31,13 @@ func initialize(channel internal_channels, initial_floor int){
 	state = idle
 	floor = initial_floor
 	direction = def.direction_when_stop
-	channel.close_door = make(chan bool)
-	channel.reset_timer = make(chan bool)
+	channel.close_door make(chan bool)
+	channel.reset_timer make(chan bool)
 	go timer(channel.close_door,channel.reset_timer)
-	go mainExecute(channel)
+	go execute(channel)
 }
 
-func mainExecute(channel internal_channels){
+func execute(channel internal_channels){
 	for {
 		select{
 		case <- channel.new_order:
@@ -74,22 +53,23 @@ func mainExecute(channel internal_channels){
 func NewOrder(channel internal_channels){
 	switch state {
 	case idle:
-		direction = queue.SelectDirection(floor,channel.package_out)
-		if queue.StopElevator(floor, direction){
+		direction = queue.selectDirection(floor,channel.package_out)
+		if queue.stop_elevator(floor, direction){
 			state = stop
 			channel.door_open_lamp <- true
 			channel.reset_timer <- true
-			queue.RemoveOrder(floor,channel.package_out)
+			queue.removeOrder(floor,channel.package_out)
 		}
-	case moving:
+	case moving_down:
+	case moving_up:
 	case stop:
-		if queue.StopElevator(floor, direction){
+		if queue.stop_elevator(floor, direction){
 			channel.reset_timer <- true
-			queue.RemoveOrder(floor,channel.package_out)
+			queue.removeOrder(floor,channel.package_out)
 		}
 	default:
 		println("invalid state detected")
-		def.run.execute()
+		def.execute()
 	}
 }
 
@@ -97,18 +77,27 @@ func FloorReached(channel internal_channels){
 	floor = new_floor
 	channel.floor_lamp <- floor
 	switch state {
-	case moving:
-		if queue.StopElevator(floor, direction) {
+	case moving_up:
+		if queue.stop_elevator(floor, direction) {
 			channel.reset_timer <- true
 			queue.RemoveOrder(floor, channel.package_out)
 			channel.DoorLamp <- true
 			direction = def.direction_when_stop
-			channel.elev_direction <- direction
+			channel.elev_direction<- direction
 			state = stop
+		}
+	case moving_down:
+		if queue.ShouldStop(floor, dir) {
+			ch.doorTimerReset <- true
+			queue.RemoveOrdersAt(floor, ch.OutgoingMsg)
+			ch.DoorLamp <- true
+			dir = def.DirStop
+			ch.MotorDir <- dir
+			state = doorOpen
 		}
 	default:
 		println("invalid state detected")
-		def.run.execute()
+		def.execute()
 	}
 }
 
@@ -117,12 +106,12 @@ func CloseDoor(channel internal_channels){
 	case idle:
 	case stop:
 		channel.door_open_lamp <- false
-		direction = queue.SelectDirection(floor, direction)
+		direction = queue.selectDirection(floor, direction)
 		channel.elev_direction <- direction
 		if direction == def.direction_when_stop{state = idle}
-		else{state = moving}
+		else{state = moving_down}
 	default:
 		println("invalid state detected")
-		def.run.execute()
+		def.execute()
 	}
 }
