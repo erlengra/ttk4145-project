@@ -3,9 +3,11 @@ package main
 import (
 	"../driver"
     "../config"
-    "../queue"
+    //"../queue"
     "../statemachine"
-    "../communication"
+    //"../communication"
+    "time"
+    //"fmt"
 )
 
 
@@ -18,6 +20,8 @@ var network_sending_channel = make(chan config.InfoPackage)
 
 var order_button_pressed_channel = make(chan config.OrderButton)
 var floor_reached_channel = make(chan int)
+
+var client_timed_out = make(chan network.ID)
 
 func main() {
 
@@ -34,18 +38,21 @@ func main() {
 
 
 
-	ch := statemachine.internal_channels{
-		new_order:     make(chan bool),
-		at_floor: make(chan int),
-		direction:     make(chan int),
-		floor_lamp:    make(chan int),
-		door_open_lamp:     make(chan bool),
-		package_out:  network_sending_channel,
+	// ch := statemachine.Internal_channels{
+	// 	New_order:     make(chan bool),
+	// 	At_floor: make(chan int),
+	// 	Direction:     make(chan int),
+	// 	Floor_lamp:    make(chan int),
+	// 	Door_open_lamp:     make(chan bool),
+	// 	Package_out:  network_sending_channel,
+	// }
+	// //fsm.Init(ch, floor)
+	// ch.At_floor <- 5
+
+
+	for {
+		time.Sleep(1 * time.Second)		
 	}
-	//fsm.Init(ch, floor)
-
-
-
 
 }
 
@@ -56,7 +63,15 @@ func main() {
 
 
 
+func listenForSlaveTimeout(ID network.ID, timer *time.Timer, timeOutChan chan network.ID) {
+	for {
+		select {
+		case <- timer.C:
+			timeOutChan <- ip
+		}
 
+	}
+}
 
 
 

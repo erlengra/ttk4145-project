@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"../config"
 	"time"
+	"strconv"
 )
 
 
@@ -199,6 +200,7 @@ func Order_Button_Poller(polling_chan_button chan config.OrderButton) {
 			for floor := 0; floor < config.NUM_FLOORS; floor++ {
 				buttonValue := Elev_Get_Button_Signal(buttonType, floor)
 				if buttonValue != 0 && buttonValue != lastFloorPassed[buttonType][floor] {
+					fmt.Println("Button of type "+strconv.Itoa(int(buttonType))+" pressed at floor"+strconv.Itoa(floor))
 					polling_chan_button <- config.OrderButton{Type: buttonType, Floor: floor}
 				}
 				lastFloorPassed[buttonType][floor] = buttonValue
