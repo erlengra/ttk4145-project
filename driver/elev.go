@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"../config"
 	"time"
-	"strconv"
+	//"strconv"
 )
 
 
@@ -59,11 +59,11 @@ func Elev_Init() int{
 	ElevDown()
 	for Io_Read_Bit(SENSOR_FLOOR1) != true { 
 		fmt.Println("On my way to floor 1...")
-		time.Sleep(1 * time.Second)
+		//time.Sleep(1 * time.Second)
 	}
 	ElevStop()
-	fmt.Println("Elevator initation complete. Ready to start from floor 1!")
 	time.Sleep(1 * time.Second)
+	fmt.Println("Elevator initation complete. Ready to start from floor 1!")
 
 	return 1;
 }
@@ -143,6 +143,14 @@ func Elev_Set_Door_Open_Lamp(value int) {
 	}
 }
 
+func Elev_Set_Door_Open_Lamp2(value bool) {
+	if value == true{
+		Io_Set_Bit(LIGHT_DOOR_OPEN)
+	} else {
+		Io_Clear_Bit(LIGHT_DOOR_OPEN)
+	}
+}
+
 func Elev_Set_Stop_Lamp(value int) {
 	if value == 1 {
 		Io_Set_Bit(LIGHT_STOP)
@@ -200,7 +208,7 @@ func Order_Button_Poller(polling_chan_button chan config.OrderButton) {
 			for floor := 0; floor < config.NUM_FLOORS; floor++ {
 				buttonValue := Elev_Get_Button_Signal(buttonType, floor)
 				if buttonValue != 0 && buttonValue != lastFloorPassed[buttonType][floor] {
-					fmt.Println("Button of type "+strconv.Itoa(int(buttonType))+" pressed at floor"+strconv.Itoa(floor))
+					//fmt.Println("Button of type "+strconv.Itoa(int(buttonType))+" pressed at floor"+strconv.Itoa(floor))
 					polling_chan_button <- config.OrderButton{Type: buttonType, Floor: floor}
 				}
 				lastFloorPassed[buttonType][floor] = buttonValue
